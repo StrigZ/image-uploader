@@ -1,19 +1,22 @@
 import { uuidv4 } from "@firebase/util";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import { FileUploader } from "react-drag-drop-files";
 import { storage } from "../firebaseConfig";
 import DropZone from "./DropZone";
-import MountainSVG from "./SVG/MountainSVG";
-import { useState } from "react";
+import { setIsLoading } from "../store/appSlice";
+import { useDispatch } from "react-redux";
 
 const ImageUpload = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const dropHandler = (file) => {
+    dispatch(setIsLoading(true));
     const id = uuidv4();
     const storageRef = ref(storage, `images/${id}`);
-
-    uploadBytes(storageRef, file).then((snapshot) => console.log("Uploaded"));
+    uploadBytes(storageRef, file).then((snapshot) => {
+      console.log("Uploaded");
+      dispatch(setIsLoading(false));
+    });
   };
 
   return (
