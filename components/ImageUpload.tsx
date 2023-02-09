@@ -1,21 +1,49 @@
 import { uuidv4 } from "@firebase/util";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { FileUploader } from "react-drag-drop-files";
 import { storage } from "../firebaseConfig";
 import DropZone from "./DropZone";
 import { setIsLoading } from "../store/appSlice";
 import { useDispatch } from "react-redux";
+import { gql, useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
+
+const UPLOAD_IMAGE = gql`
+  mutation AddImage($downloadUrl: String!, $firebaseId: String!) {
+    addImage(downloadUrl: $downloadUrl, firebaseId: $firebaseId) {
+      downloadUrl
+      firebaseId
+    }
+  }
+`;
 
 const ImageUpload = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const [uploadImage, { data, loading, error }] = useMutation(UPLOAD_IMAGE);
 
   const dropHandler = (file) => {
     dispatch(setIsLoading(true));
+
     const id = uuidv4();
     const storageRef = ref(storage, `images/${id}`);
+
     uploadBytes(storageRef, file).then((snapshot) => {
       console.log("Uploaded");
-      dispatch(setIsLoading(false));
+      // dispatch(setIsLoading(false));
+
+      getDownloadURL(storageRef).then(async (url) => {
+        await uploadImage({
+          variables: {
+            downloadUrl: url,
+            firebaseId: id,
+          },
+        }).catch((e) => console.error(e));
+      });
+
+      console.log("Uploaded to DB");
+
+      router.push("/" + id);
     });
   };
 

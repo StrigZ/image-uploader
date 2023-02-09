@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useSelector } from "react-redux";
 import ImageUpload from "../components/ImageUpload";
 import Loading from "../components/Loading";
-import UploadSuccess from "../components/UploadSuccess";
+
 import { selectAppState } from "../store/appSlice";
 
 const Home: NextPage = () => {
