@@ -11,7 +11,8 @@ datasource db {
 }
 
 model Image {
-  id           String   @id
-  createdAt    DateTime @default(now())
-  downloadLink String   @unique
+  id          Int      @id @default(autoincrement())
+  firebaseId  String   @unique
+  createdAt   DateTime @default(now())
+  downloadUrl String   @unique
 }
