@@ -17,8 +17,6 @@ const Home: NextPage = () => {
 
       <main className="">
         {appState.isLoading ? <Loading /> : <ImageUpload />}
-
-        {/* <UploadSuccess /> */}
       </main>
     </div>
   );

@@ -1,5 +1,4 @@
 import CheckCircle from "@mui/icons-material/CheckCircle";
-import img from "../public/img.jpg";
 
 const UploadSuccess = () => {
   return (

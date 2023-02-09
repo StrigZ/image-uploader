@@ -4,6 +4,7 @@ import type { AppState } from "./store";
 
 const initialState = {
   isLoading: false,
+  isComplete: false,
 };
 
 export const appSlice = createSlice({
@@ -13,6 +14,9 @@ export const appSlice = createSlice({
   reducers: {
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
+    },
+    setIsComplete(state, action: PayloadAction<boolean>) {
+      state.isComplete = action.payload;
     },
   },
 });
