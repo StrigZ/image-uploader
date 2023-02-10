@@ -13,5 +13,6 @@ type Mutation {
 }
 
 type Query {
-  images: [Image]
+  allImages: [Image!]!
+  findImageById(firebaseId: String!): Image!
 }

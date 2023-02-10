@@ -1,4 +1,6 @@
+import { createNextState } from "@reduxjs/toolkit";
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
+import { Context } from "../context";
 
 export const Image = objectType({
   name: "Image",
@@ -12,10 +14,24 @@ export const Image = objectType({
 export const ImagesQuery = extendType({
   type: "Query",
   definition(t) {
-    t.list.field("images", {
+    t.nonNull.list.nonNull.field("allImages", {
       type: "Image",
-      async resolve(_parent, _args, ctx) {
-        return await ctx.prisma.image.findMany();
+      resolve(_, __, ctx: Context) {
+        return ctx.prisma.image.findMany();
+      },
+    });
+
+    t.nonNull.field("findImageById", {
+      type: "Image",
+      args: {
+        firebaseId: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx: Context) {
+        return await ctx.prisma.image.findUnique({
+          where: {
+            firebaseId: args.firebaseId,
+          },
+        });
       },
     });
   },

@@ -4,9 +4,8 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        hostname: "scriptverse.academy",
+        hostname: "firebasestorage.googleapis.com",
         protocol: "https",
-        pathname: "/img/thumbnails/reactjs-multi-color-progress-bar.png",
       },
     ],
   },

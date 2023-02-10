@@ -30,7 +30,6 @@ const ImageUpload = () => {
 
     uploadBytes(storageRef, file).then((snapshot) => {
       console.log("Uploaded");
-      // dispatch(setIsLoading(false));
 
       getDownloadURL(storageRef).then(async (url) => {
         await uploadImage({
@@ -38,12 +37,13 @@ const ImageUpload = () => {
             downloadUrl: url,
             firebaseId: id,
           },
-        }).catch((e) => console.error(e));
+        })
+          .catch((e) => console.error(e))
+          .then(() => {
+            router.push("/" + id);
+            dispatch(setIsLoading(false));
+          });
       });
-
-      console.log("Uploaded to DB");
-
-      router.push("/" + id);
     });
   };
 
